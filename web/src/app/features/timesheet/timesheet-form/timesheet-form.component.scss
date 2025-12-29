@@ -1,0 +1,113 @@
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+}
+
+.entries-section {
+  margin-top: 24px;
+}
+
+.entries-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+  }
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.btn-add {
+  background: #48bb78;
+  color: white;
+
+  &:hover {
+    background: #38a169;
+  }
+}
+
+.btn-remove {
+  background: #fc8181;
+  color: white;
+  margin-top: 8px;
+
+  &:hover {
+    background: #f56565;
+  }
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  width: 100%;
+  padding: 12px;
+
+  &:hover:not(:disabled) {
+    background: #5a67d8;
+  }
+
+  &:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+  }
+}
+
+.entry-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.entry-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 80px;
+  gap: 12px;
+}
+
+.no-entries {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.form-actions {
+  margin-top: 24px;
+}

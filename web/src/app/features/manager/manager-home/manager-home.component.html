@@ -1,0 +1,39 @@
+<div class="home">
+  <h1>Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card pending">
+      <span class="value">{{ pendingCount() }}</span>
+      <span class="label">Pending Approvals</span>
+    </div>
+    <div class="stat-card hours">
+      <span class="value">{{ totalHoursThisMonth() }}</span>
+      <span class="label">Hours This Month</span>
+    </div>
+    <div class="stat-card employees">
+      <span class="value">{{ activeEmployees() }}</span>
+      <span class="label">Active Employees</span>
+    </div>
+  </div>
+
+  <section class="recent-section">
+    <h2>Pending Timesheets</h2>
+    @if (loading()) {
+    <p>Loading...</p>
+    } @else if (timesheets().length === 0) {
+    <p class="empty">No pending timesheets</p>
+    } @else {
+    <div class="pending-list">
+      @for (ts of timesheets().slice(0, 5); track ts.id) {
+      <div class="pending-item">
+        <div class="info">
+          <span class="employee">{{ ts.userName }}</span>
+          <span class="date">{{ ts.submissionDate | date : 'mediumDate' }}</span>
+        </div>
+        <div class="hours">{{ ts.totalHours }} hrs</div>
+      </div>
+      }
+    </div>
+    }
+  </section>
+</div>

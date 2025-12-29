@@ -27,6 +27,7 @@ namespace Timesheet.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(t => t.Entries)
+                    .ThenInclude(e => e.Project)
                 .Where(t => t.UserId == userId)
                 .OrderByDescending(t => t.SubmissionDate)
                 .ToListAsync();
@@ -37,6 +38,7 @@ namespace Timesheet.Infrastructure.Repositories
             return await _dbSet
                 .Include(t => t.User)
                 .Include(t => t.Entries)
+                    .ThenInclude(e => e.Project)
                 .Where(t => t.Status == status)
                 .ToListAsync();
         }

@@ -1,0 +1,36 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Timesheet Management</h1>
+    <h2>Select User to Login</h2>
+
+    @if (loading()) {
+    <div class="loading">Loading users...</div>
+    } @else if (error()) {
+    <div class="error">{{ error() }}</div>
+    } @else {
+    <div class="user-section">
+      <h3>Managers</h3>
+      <div class="user-list">
+        @for (user of managers(); track user.id) {
+        <button class="user-btn manager" (click)="login(user)">
+          <span class="name">{{ user.fullName }}</span>
+          <span class="email">{{ user.email }}</span>
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="user-section">
+      <h3>Employees</h3>
+      <div class="user-list">
+        @for (user of employees(); track user.id) {
+        <button class="user-btn employee" (click)="login(user)">
+          <span class="name">{{ user.fullName }}</span>
+          <span class="email">{{ user.email }}</span>
+        </button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>

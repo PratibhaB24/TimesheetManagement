@@ -1,0 +1,80 @@
+<div class="approvals">
+  <h1>Timesheet Approvals</h1>
+
+  @if (loading()) {
+  <div class="loading">Loading pending timesheets...</div>
+  } @else if (timesheets().length === 0) {
+  <div class="empty-state">
+    <span class="icon">✅</span>
+    <h2>All caught up!</h2>
+    <p>No pending timesheets to approve.</p>
+  </div>
+  } @else {
+  <div class="timesheet-cards">
+    @for (ts of timesheets(); track ts.id) {
+    <div class="approval-card">
+      <div class="card-header">
+        <div class="employee-info">
+          <span class="name">{{ ts.userName }}</span>
+          <span class="date">Submitted: {{ ts.submissionDate | date : 'mediumDate' }}</span>
+        </div>
+        <div class="total-hours">
+          <span class="value">{{ ts.totalHours }}</span>
+          <span class="label">hours</span>
+        </div>
+      </div>
+
+      <div class="entries-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Project</th>
+              <th>Hours</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of ts.entries; track entry.id) {
+            <tr>
+              <td>{{ entry.date | date : 'shortDate' }}</td>
+              <td>{{ entry.projectName }} ({{ entry.projectCode }})</td>
+              <td>{{ entry.hours }}</td>
+              <td>{{ entry.description }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-approve" (click)="approve(ts.id)">✓ Approve</button>
+        <button class="btn btn-reject" (click)="openRejectModal(ts)">✕ Reject</button>
+      </div>
+    </div>
+    }
+  </div>
+  } @if (showRejectModal()) {
+  <div class="modal-overlay" (click)="closeRejectModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>Reject Timesheet</h2>
+      <p>Please provide a reason for rejecting this timesheet:</p>
+      <textarea
+        [(ngModel)]="rejectionComments"
+        placeholder="Enter rejection comments (minimum 10 characters)"
+        rows="4"
+      ></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-cancel" (click)="closeRejectModal()">Cancel</button>
+        <button
+          class="btn btn-reject"
+          (click)="confirmReject()"
+          [disabled]="rejectionComments.length < 10"
+        >
+          Reject Timesheet
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

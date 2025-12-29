@@ -14,6 +14,22 @@ namespace Timesheet.Infrastructure.Repositories
         {
         }
 
+        public async Task<IEnumerable<ProjectAssignment>> GetAllWithDetailsAsync()
+        {
+            return await _dbSet
+                .Include(pa => pa.User)
+                .Include(pa => pa.Project)
+                .ToListAsync();
+        }
+
+        public async Task<ProjectAssignment?> GetByIdWithDetailsAsync(int id)
+        {
+            return await _dbSet
+                .Include(pa => pa.User)
+                .Include(pa => pa.Project)
+                .FirstOrDefaultAsync(pa => pa.Id == id);
+        }
+
         public async Task<IEnumerable<ProjectAssignment>> GetUserAssignmentsAsync(int userId)
         {
             return await _dbSet

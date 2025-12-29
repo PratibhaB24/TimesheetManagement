@@ -1,0 +1,94 @@
+@if (loading) {
+<div class="loading">Loading timesheets...</div>
+} @else if (timesheets.length === 0) {
+<div class="empty">No timesheets found. Create your first timesheet!</div>
+} @else {
+<div class="timesheet-list">
+  @for (timesheet of timesheets; track timesheet.id) {
+  <div class="timesheet-card" [class]="getStatusClass(timesheet.status)">
+    <div class="card-header">
+      <span class="date">{{ timesheet.submissionDate | date : 'mediumDate' }}</span>
+      <span class="status-badge" [class]="getStatusClass(timesheet.status)">
+        {{ getStatusText(timesheet.status) }}
+      </span>
+    </div>
+
+    <div class="card-body">
+      <div class="total-hours">
+        <span class="value">{{ timesheet.totalHours }}</span>
+        <span class="label">hours</span>
+      </div>
+
+      <div class="entries-summary">{{ timesheet.entries.length }} entries</div>
+    </div>
+
+    @if (timesheet.rejectionComments) {
+    <div class="rejection-comments">
+      <strong>Rejection reason:</strong> {{ timesheet.rejectionComments }}
+    </div>
+    }
+
+    <div class="card-actions">
+      @if (timesheet.status === TimesheetStatus.Draft) {
+      <button class="btn btn-submit" (click)="submit(timesheet.id)">Submit for Approval</button>
+      }
+      <button class="btn btn-view" (click)="viewDetails(timesheet)">View Details</button>
+    </div>
+  </div>
+  }
+</div>
+} @if (selectedTimesheet()) {
+<div class="modal-overlay" (click)="closeDetails()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Timesheet Details</h2>
+      <button class="btn-close" (click)="closeDetails()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-row">
+        <span class="label">Submission Date:</span>
+        <span class="value">{{ selectedTimesheet()!.submissionDate | date : 'mediumDate' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Status:</span>
+        <span class="status-badge" [class]="getStatusClass(selectedTimesheet()!.status)">
+          {{ getStatusText(selectedTimesheet()!.status) }}
+        </span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Total Hours:</span>
+        <span class="value">{{ selectedTimesheet()!.totalHours }} hours</span>
+      </div>
+
+      @if (selectedTimesheet()!.rejectionComments) {
+      <div class="rejection-box">
+        <strong>Rejection Reason:</strong>
+        <p>{{ selectedTimesheet()!.rejectionComments }}</p>
+      </div>
+      }
+
+      <h3>Time Entries</h3>
+      <table class="entries-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Project</th>
+            <th>Hours</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of selectedTimesheet()!.entries; track entry.id) {
+          <tr>
+            <td>{{ entry.date | date : 'shortDate' }}</td>
+            <td>{{ entry.projectName }} ({{ entry.projectCode }})</td>
+            <td>{{ entry.hours }}</td>
+            <td>{{ entry.description }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+}

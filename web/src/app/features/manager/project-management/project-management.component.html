@@ -1,0 +1,108 @@
+<div class="project-management">
+  <div class="header">
+    <h1>Project Management</h1>
+    <button class="btn btn-primary" (click)="showForm.set(true)">+ New Project</button>
+  </div>
+
+  @if (showForm()) {
+  <div class="modal-overlay" (click)="showForm.set(false)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>Create New Project</h2>
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Project Code</label>
+          <input
+            type="text"
+            formControlName="code"
+            class="form-control"
+            placeholder="e.g., PROJ-001"
+          />
+        </div>
+        <div class="form-group">
+          <label>Project Name</label>
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control"
+            placeholder="Project name"
+          />
+        </div>
+        <div class="form-group">
+          <label>Client Name</label>
+          <input
+            type="text"
+            formControlName="clientName"
+            class="form-control"
+            placeholder="Client name"
+          />
+        </div>
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" formControlName="isBillable" />
+            Billable Project
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-cancel" (click)="showForm.set(false)">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!projectForm.valid">
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+
+  <div class="projects-table">
+    @if (loading()) {
+    <p class="loading">Loading projects...</p>
+    } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Client</th>
+          <th>Billable</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (project of projects(); track project.id) {
+        <tr>
+          <td>
+            <strong>{{ project.code }}</strong>
+          </td>
+          <td>{{ project.name }}</td>
+          <td>{{ project.clientName }}</td>
+          <td>
+            <span class="badge" [class.billable]="project.isBillable">
+              {{ project.isBillable ? 'Yes' : 'No' }}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge" [class]="getStatusClass(project.status)">
+              {{ getStatusText(project.status) }}
+            </span>
+          </td>
+          <td>
+            @if (project.status === ProjectStatus.Active) {
+            <button class="btn btn-sm btn-deactivate" (click)="deactivate(project.id)">
+              Deactivate
+            </button>
+            } @else {
+            <button class="btn btn-sm btn-activate" (click)="activate(project.id)">Activate</button>
+            }
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="6" class="empty">No projects found</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+</div>

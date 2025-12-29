@@ -1,0 +1,91 @@
+<div class="assignments">
+  <div class="header">
+    <h1>Project Assignments</h1>
+    <button class="btn btn-primary" (click)="showForm.set(true)">+ New Assignment</button>
+  </div>
+
+  @if (showForm()) {
+  <div class="modal-overlay" (click)="showForm.set(false)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>Create New Assignment</h2>
+      <form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Employee</label>
+          <select formControlName="userId" class="form-control">
+            <option value="">Select Employee</option>
+            @for (emp of employees(); track emp.id) {
+            <option [value]="emp.id">{{ emp.fullName }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Project</label>
+          <select formControlName="projectId" class="form-control">
+            <option value="">Select Project</option>
+            @for (proj of projects(); track proj.id) {
+            <option [value]="proj.id">{{ proj.code }} - {{ proj.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" formControlName="startDate" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>End Date (Optional)</label>
+          <input type="date" formControlName="endDate" class="form-control" />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-cancel" (click)="showForm.set(false)">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!assignmentForm.valid">
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+
+  <div class="assignments-table">
+    @if (loading()) {
+    <p class="loading">Loading assignments...</p>
+    } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Project</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (assignment of assignments(); track assignment.id) {
+        <tr>
+          <td>{{ assignment.userName }}</td>
+          <td>
+            <strong>{{ assignment.projectCode }}</strong
+            ><br />
+            <small>{{ assignment.projectName }}</small>
+          </td>
+          <td>{{ assignment.startDate | date : 'mediumDate' }}</td>
+          <td>
+            {{ assignment.endDate ? (assignment.endDate | date : 'mediumDate') : 'No end date' }}
+          </td>
+          <td>
+            <button class="btn btn-sm btn-delete" (click)="deleteAssignment(assignment.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5" class="empty">No assignments found</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+</div>

@@ -23,13 +23,13 @@ namespace Timesheet.Application.Services
 
         public async Task<ProjectAssignmentDto?> GetByIdAsync(int id)
         {
-            var assignment = await _unitOfWork.ProjectAssignments.GetByIdAsync(id);
+            var assignment = await _unitOfWork.ProjectAssignments.GetByIdWithDetailsAsync(id);
             return assignment != null ? _mapper.Map<ProjectAssignmentDto>(assignment) : null;
         }
 
         public async Task<IEnumerable<ProjectAssignmentDto>> GetAllAsync()
         {
-            var assignments = await _unitOfWork.ProjectAssignments.GetAllAsync();
+            var assignments = await _unitOfWork.ProjectAssignments.GetAllWithDetailsAsync();
             return _mapper.Map<IEnumerable<ProjectAssignmentDto>>(assignments);
         }
 

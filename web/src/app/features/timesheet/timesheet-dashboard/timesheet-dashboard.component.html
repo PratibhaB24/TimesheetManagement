@@ -1,0 +1,42 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h1>My Timesheets</h1>
+    <div class="user-info">
+      <span>Welcome, {{ currentUser()?.fullName }}</span>
+      <button class="btn btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="dashboard-content">
+    <div class="stats-bar">
+      <div class="stat-card">
+        <span class="stat-value">{{ draftCount() }}</span>
+        <span class="stat-label">Draft</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ submittedCount() }}</span>
+        <span class="stat-label">Submitted</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ approvedCount() }}</span>
+        <span class="stat-label">Approved</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ rejectedCount() }}</span>
+        <span class="stat-label">Rejected</span>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <section class="form-section">
+        <h2>Create New Timesheet</h2>
+        <app-timesheet-form [userId]="currentUser()?.id || 0" />
+      </section>
+
+      <section class="list-section">
+        <h2>My Timesheet History</h2>
+        <app-timesheet-list [timesheets]="timesheets()" [loading]="loading()" />
+      </section>
+    </div>
+  </div>
+</div>

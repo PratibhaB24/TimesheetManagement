@@ -1,0 +1,184 @@
+.reports {
+  h1 {
+    margin: 0 0 24px;
+    color: #1a202c;
+  }
+}
+
+.filters-section {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a5568;
+  }
+
+  select,
+  input {
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    background: #5a67d8;
+  }
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #718096;
+}
+
+.report-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  h2 {
+    margin: 0 0 20px;
+    color: #1a202c;
+    font-size: 18px;
+  }
+
+  h3 {
+    margin: 24px 0 16px;
+    color: #1a202c;
+    font-size: 16px;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 13px;
+  background: #f7fafc;
+}
+
+td {
+  color: #1a202c;
+
+  small {
+    color: #718096;
+  }
+
+  &.billable {
+    color: #38a169;
+  }
+
+  &.non-billable {
+    color: #e53e3e;
+  }
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  background: #fed7d7;
+  color: #c53030;
+
+  &.yes {
+    background: #c6f6d5;
+    color: #22543d;
+  }
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+
+  .value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .label {
+    font-size: 13px;
+    color: #718096;
+  }
+
+  &.billable {
+    background: #c6f6d5;
+
+    .value {
+      color: #22543d;
+    }
+  }
+
+  &.non-billable {
+    background: #fed7d7;
+
+    .value {
+      color: #c53030;
+    }
+  }
+
+  &.total {
+    background: #e2e8f0;
+
+    .value {
+      color: #1a202c;
+    }
+  }
+
+  &.percentage {
+    background: #bee3f8;
+
+    .value {
+      color: #2a4365;
+    }
+  }
+}

@@ -1,0 +1,157 @@
+<div class="reports">
+  <h1>Reports</h1>
+
+  <div class="filters-section">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Report Type</label>
+        <select [(ngModel)]="selectedReport" (change)="loadReport()">
+          <option value="employee">Employee Hours Summary</option>
+          <option value="project">Project Hours Summary</option>
+          <option value="billable">Billable vs Non-Billable</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Start Date</label>
+        <input type="date" [(ngModel)]="startDate" (change)="loadReport()" />
+      </div>
+
+      <div class="filter-group">
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="endDate" (change)="loadReport()" />
+      </div>
+
+      <button class="btn btn-primary" (click)="loadReport()">Generate Report</button>
+    </div>
+  </div>
+
+  @if (loading()) {
+  <div class="loading">Loading report...</div>
+  } @else { @switch (selectedReport) { @case ('employee') {
+  <div class="report-card">
+    <h2>Employee Hours Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Total Hours</th>
+          <th>Billable</th>
+          <th>Non-Billable</th>
+          <th>Timesheets</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of employeeReport(); track row.userId) {
+        <tr>
+          <td>{{ row.employeeName }}</td>
+          <td>
+            <strong>{{ row.totalHours }}</strong>
+          </td>
+          <td class="billable">{{ row.billableHours }}</td>
+          <td class="non-billable">{{ row.nonBillableHours }}</td>
+          <td>{{ row.approvedTimesheets }}</td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5" class="empty">No data available</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @case ('project') {
+  <div class="report-card">
+    <h2>Project Hours Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Client</th>
+          <th>Billable</th>
+          <th>Total Hours</th>
+          <th>Employees</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of projectReport(); track row.projectId) {
+        <tr>
+          <td>
+            <strong>{{ row.projectCode }}</strong
+            ><br />
+            <small>{{ row.projectName }}</small>
+          </td>
+          <td>{{ row.clientName }}</td>
+          <td>
+            <span class="badge" [class.yes]="row.isBillable">
+              {{ row.isBillable ? 'Yes' : 'No' }}
+            </span>
+          </td>
+          <td>
+            <strong>{{ row.totalHours }}</strong>
+          </td>
+          <td>{{ row.employeeCount }}</td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5" class="empty">No data available</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @case ('billable') { @if (billableReport()) {
+  <div class="report-card">
+    <h2>Billable vs Non-Billable Hours</h2>
+
+    <div class="summary-cards">
+      <div class="summary-card billable">
+        <span class="value">{{ billableReport()!.totalBillableHours }}</span>
+        <span class="label">Billable Hours</span>
+      </div>
+      <div class="summary-card non-billable">
+        <span class="value">{{ billableReport()!.totalNonBillableHours }}</span>
+        <span class="label">Non-Billable Hours</span>
+      </div>
+      <div class="summary-card total">
+        <span class="value">{{ billableReport()!.totalHours }}</span>
+        <span class="label">Total Hours</span>
+      </div>
+      <div class="summary-card percentage">
+        <span class="value">{{ billableReport()!.billablePercentage }}%</span>
+        <span class="label">Billable Rate</span>
+      </div>
+    </div>
+
+    <h3>Breakdown by Project</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Type</th>
+          <th>Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (detail of billableReport()!.details; track detail.projectCode) {
+        <tr>
+          <td>
+            <strong>{{ detail.projectCode }}</strong
+            ><br />
+            <small>{{ detail.projectName }}</small>
+          </td>
+          <td>
+            <span class="badge" [class.yes]="detail.isBillable">
+              {{ detail.isBillable ? 'Billable' : 'Non-Billable' }}
+            </span>
+          </td>
+          <td>
+            <strong>{{ detail.hours }}</strong>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } } } }
+</div>
